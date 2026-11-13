@@ -37,20 +37,20 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 		case ".json":
 			data, err = parser.ParseChromeJSON(file)
 		default:
-			http.Error(w, "Неподдерживаемый формат файла", http.StatusBadRequest)
+			http.Error(w, "Unsupported file format", http.StatusBadRequest)
 			return
 		}
 	} else {
 		path := r.FormValue("path")
 		if path == "" {
-			http.Error(w, "Файл не загружен и путь не указан", http.StatusBadRequest)
+			http.Error(w, "No file uploaded and no path provided", http.StatusBadRequest)
 			return
 		}
 		data, err = loadFromPath(path)
 	}
 
 	if err != nil {
-		http.Error(w, "Ошибка парсинга: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, "Parse error: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -103,7 +103,7 @@ func handleBookmarks(w http.ResponseWriter, r *http.Request) {
 	filtered := filterBookmarks(bookmarks, filter, search, folder)
 
 	tmpl.ExecuteTemplate(w, "base.html", map[string]interface{}{
-		"Title":     "Закладки",
+		"Title":     "Bookmarks",
 		"Content":   "bookmarks_page",
 		"Bookmarks": filtered,
 		"Filter":    filter,
@@ -166,21 +166,21 @@ func handleDuplicates(w http.ResponseWriter, r *http.Request) {
 	mu.RUnlock()
 
 	tmpl.ExecuteTemplate(w, "base.html", map[string]interface{}{
-		"Title":     "Дубликаты",
+		"Title":     "Duplicates",
 		"Content":   "duplicates_page",
 		"DupGroups": dups,
-		"TotalDups":  len(dups),
+		"TotalDups": len(dups),
 	})
 }
 
 func handleDupResolve(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	keepIDs := r.Form["keep"]
+	deleteIDs := r.Form["ids"]
 
-	keepSet := make(map[int]bool)
-	for _, idStr := range keepIDs {
+	deleteSet := make(map[int]bool)
+	for _, idStr := range deleteIDs {
 		id, _ := strconv.Atoi(idStr)
-		keepSet[id] = true
+		deleteSet[id] = true
 	}
 
 	mu.Lock()
@@ -188,20 +188,16 @@ func handleDupResolve(w http.ResponseWriter, r *http.Request) {
 
 	removeSet := make(map[int]bool)
 	for _, group := range dups {
-		hasKept := false
+		marked := 0
+		total := len(group.Bookmarks)
 		for _, b := range group.Bookmarks {
-			if keepSet[b.ID] {
-				hasKept = true
-				break
-			}
-		}
-		if !hasKept {
-			keepSet[group.Bookmarks[0].ID] = true
-		}
-		for _, b := range group.Bookmarks {
-			if !keepSet[b.ID] {
+			if deleteSet[b.ID] {
 				removeSet[b.ID] = true
+				marked++
 			}
+		}
+		if marked == total {
+			delete(removeSet, group.Bookmarks[0].ID)
 		}
 	}
 
@@ -223,7 +219,7 @@ func handleStructure(w http.ResponseWriter, r *http.Request) {
 	mu.RUnlock()
 
 	tmpl.ExecuteTemplate(w, "base.html", map[string]interface{}{
-		"Title":    "Структура папок",
+		"Title":    "Folder Structure",
 		"Content":  "structure_page",
 		"Analysis": analysis,
 	})
@@ -241,7 +237,7 @@ func handleCheckLinksStart(w http.ResponseWriter, r *http.Request) {
 	checkMu.Lock()
 	if checkRunning {
 		checkMu.Unlock()
-		http.Error(w, "Проверка уже запущена", http.StatusConflict)
+		http.Error(w, "Check already running", http.StatusConflict)
 		return
 	}
 	checkRunning = true
@@ -319,7 +315,7 @@ func handleCheckLinksProgress(w http.ResponseWriter, r *http.Request) {
 	checkMu.Unlock()
 
 	if running && done < total {
-		w.Header().Set("HX-Trigger", "every 500ms")
+		w.Header().Set("HX-Trigger", "every 800ms")
 	}
 
 	tmpl.ExecuteTemplate(w, "check_progress.html", map[string]interface{}{

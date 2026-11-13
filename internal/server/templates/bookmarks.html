@@ -1,40 +1,40 @@
 {{define "bookmarks_page"}}
-<h1>Закладки</h1>
+<h1>Bookmarks</h1>
 
-<p>Всего: {{.Total}}, показано: {{.Shown}}</p>
+<p>Total: {{.Total}}, shown: {{.Shown}}</p>
 
 <form method="get" action="/bookmarks" style="display:flex; gap:0.5rem; align-items:flex-end; flex-wrap:wrap;">
     <label>
-        Поиск
-        <input type="search" name="search" value="{{.Search}}" placeholder="Заголовок или URL">
+        Search
+        <input type="search" name="search" value="{{.Search}}" placeholder="Title or URL">
     </label>
     <label>
-        Фильтр
+        Filter
         <select name="filter">
-            <option value="">Все</option>
-            <option value="broken" {{if eq .Filter "broken"}}selected{{end}}>Битые</option>
-            <option value="redirect" {{if eq .Filter "redirect"}}selected{{end}}>Редиректы</option>
-            <option value="duplicate" {{if eq .Filter "duplicate"}}selected{{end}}>Дубликаты</option>
+            <option value="">All</option>
+            <option value="broken" {{if eq .Filter "broken"}}selected{{end}}>Broken</option>
+            <option value="redirect" {{if eq .Filter "redirect"}}selected{{end}}>Redirects</option>
+            <option value="duplicate" {{if eq .Filter "duplicate"}}selected{{end}}>Duplicates</option>
         </select>
     </label>
     <label>
-        Папка
+        Folder
         <select name="folder">
-            <option value="">Все папки</option>
+            <option value="">All folders</option>
             {{range .Folders}}
             <option value="{{.}}" {{if eq $.Folder .}}selected{{end}}>{{.}}</option>
             {{end}}
         </select>
     </label>
-    <button type="submit">Применить</button>
+    <button type="submit">Apply</button>
 </form>
 
 <div style="display:flex; gap:0.5rem; margin:1rem 0; flex-wrap:wrap;">
-    <button hx-get="/check-links" hx-target="#check-area" hx-swap="innerHTML">
-        Проверить ссылки
+    <button type="button" hx-get="/check-links" hx-target="#check-area" hx-swap="innerHTML">
+        Check Links
     </button>
-    <button onclick="location.href='/categorize'">
-        Авто-категоризация
+    <button type="button" onclick="location.href='/categorize'">
+        Auto-Categorize
     </button>
 </div>
 
@@ -42,12 +42,12 @@
 
 <form id="bookmarks-form" method="post" action="/delete">
     <div style="display:flex; gap:0.5rem; margin-bottom:0.5rem;">
-        <button type="button" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=true)">Выбрать всё</button>
-        <button type="button" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=false)">Снять выбор</button>
-        <button type="submit" formaction="/delete" onclick="return confirm('Удалить выбранные закладки?')" class="secondary">Удалить</button>
-        <button type="submit" formaction="/move" onclick="return confirm('Переместить выбранные?')" class="secondary">Переместить в папку</button>
+        <button type="button" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=true)">Select All</button>
+        <button type="button" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=false)">Deselect</button>
+        <button type="submit" formaction="/delete" onclick="return confirm('Delete selected bookmarks?')" class="secondary">Delete</button>
+        <button type="submit" formaction="/move" onclick="return confirm('Move selected bookmarks?')" class="secondary">Move to folder</button>
         <select name="folder" form="bookmarks-form">
-            <option value="">(без папки)</option>
+            <option value="">(no folder)</option>
             {{range .Folders}}
             <option value="{{.}}">{{.}}</option>
             {{end}}
@@ -59,11 +59,11 @@
         <thead>
             <tr>
                 <th><input type="checkbox" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=this.checked)"></th>
-                <th>Заголовок</th>
+                <th>Title</th>
                 <th>URL</th>
-                <th>Папка</th>
-                <th>Категория</th>
-                <th>Статус</th>
+                <th>Folder</th>
+                <th>Category</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -75,12 +75,12 @@
                 <td>{{.FolderPath}}</td>
                 <td>{{.SuggestedCategory}}</td>
                 <td>
-                    {{if .IsDuplicate}}<span class="badge badge-duplicate">Дубль</span>{{end}}
+                    {{if .IsDuplicate}}<span class="badge badge-duplicate">Dup</span>{{end}}
                     {{if .StatusCode}}
                     <span class="badge {{statusClass .StatusCode}}">{{statusLabel .StatusCode ""}}</span>
                     {{end}}
                     {{if .RedirectURL}}
-                    <span class="badge badge-redirect" title="{{.RedirectURL}}">→</span>
+                    <span class="badge badge-redirect" title="{{.RedirectURL}}">Redirect</span>
                     {{end}}
                 </td>
             </tr>

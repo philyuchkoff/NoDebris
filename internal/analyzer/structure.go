@@ -14,7 +14,7 @@ func AnalyzeStructure(bookmarks []model.Bookmark) []model.FolderAnalysis {
 
 	for _, b := range bookmarks {
 		if b.FolderPath == "" {
-			folders["(без папки)"]++
+			folders["(no folder)"]++
 			continue
 		}
 		parts := strings.Split(b.FolderPath, "/")
@@ -42,15 +42,30 @@ func AnalyzeStructure(bookmarks []model.Bookmark) []model.FolderAnalysis {
 		}
 
 		if fa.IsEmpty {
-			fa.Suggestion = "Пустая папка — можно удалить"
+			fa.Suggestion = "Empty folder — can be removed"
 		} else if fa.IsShallow {
-			fa.Suggestion = "Всего " + strings.TrimSpace(string([]rune{'0' + rune(count%10)})) + " закладки — можно слить с родительской"
+			fa.Suggestion = "Only " + itoa(count) + " bookmark(s) — consider merging with parent"
 		} else if depth > maxHealthyDepth {
-			fa.Suggestion = "Слишком глубокая вложенность"
+			fa.Suggestion = "Too deeply nested"
 		}
 
 		result = append(result, fa)
 	}
 
 	return result
+}
+
+func itoa(n int) string {
+	if n < 0 {
+		return "0"
+	}
+	if n == 0 {
+		return "0"
+	}
+	digits := []byte{}
+	for n > 0 {
+		digits = append([]byte{byte('0' + n%10)}, digits...)
+		n /= 10
+	}
+	return string(digits)
 }

@@ -14,18 +14,18 @@ type CategoryRule struct {
 }
 
 var defaultRules = []CategoryRule{
-	{Domain: "github.com", Category: "Разработка/GitHub"},
-	{Domain: "gitlab.com", Category: "Разработка/GitLab"},
-	{Domain: "stackoverflow.com", Category: "Разработка/Stack Overflow"},
-	{Domain: "habr.com", Category: "Статьи"},
-	{Domain: "medium.com", Category: "Статьи"},
-	{Domain: "youtube.com", Category: "Видео"},
-	{Domain: "reddit.com", Category: "Соцсети"},
-	{Domain: "twitter.com", Category: "Соцсети"},
-	{Domain: "x.com", Category: "Соцсети"},
-	{Domain: "linkedin.com", Category: "Соцсети"},
-	{Domain: "docs.google.com", Category: "Документы"},
-	{Domain: "notion.so", Category: "Документы"},
+	{Domain: "github.com", Category: "Dev/GitHub"},
+	{Domain: "gitlab.com", Category: "Dev/GitLab"},
+	{Domain: "stackoverflow.com", Category: "Dev/Stack Overflow"},
+	{Domain: "habr.com", Category: "Articles"},
+	{Domain: "medium.com", Category: "Articles"},
+	{Domain: "youtube.com", Category: "Video"},
+	{Domain: "reddit.com", Category: "Social"},
+	{Domain: "twitter.com", Category: "Social"},
+	{Domain: "x.com", Category: "Social"},
+	{Domain: "linkedin.com", Category: "Social"},
+	{Domain: "docs.google.com", Category: "Documents"},
+	{Domain: "notion.so", Category: "Documents"},
 }
 
 func LoadRules(path string) ([]CategoryRule, error) {

@@ -68,18 +68,18 @@ func init() {
 		},
 		"statusLabel": func(code int, errStr string) string {
 			if errStr != "" {
-				return "Ошибка"
+				return "Error"
 			}
 			if code == 0 {
-				return "—"
+				return "\u2014"
 			}
 			if code >= 200 && code < 300 {
 				return "OK"
 			}
 			if code >= 300 && code < 400 {
-				return "Редирект"
+				return "Redirect"
 			}
-			return "Битая"
+			return "Broken"
 		},
 	}).ParseFS(templateFS, "templates/*.html"))
 }

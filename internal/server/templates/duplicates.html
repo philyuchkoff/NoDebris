@@ -1,19 +1,20 @@
 {{define "duplicates_page"}}
-<h1>Дубликаты</h1>
+<h1>Duplicate Bookmarks</h1>
 
 {{if .TotalDups}}
-<p>Найдено групп дубликатов: {{.TotalDups}}</p>
+<p>Found {{.TotalDups}} duplicate groups.</p>
 
 <form method="post" action="/duplicates/resolve">
     {{range $i, $g := .DupGroups}}
     <article>
         <h3>{{$g.URL}}</h3>
-        <p style="color: var(--pico-color-slate-500); font-size: 0.85rem;">Найдено копий: {{len $g.Bookmarks}}</p>
+        <p style="color: var(--pico-color-slate-500); font-size: 0.85rem;">{{len $g.Bookmarks}} copies found</p>
+        <p style="color: var(--pico-color-slate-500); font-size: 0.8rem;">Check the copies you want to <strong>delete</strong>:</p>
         <ul style="list-style:none; padding:0;">
             {{range $g.Bookmarks}}
             <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--pico-muted-border-color);">
                 <label>
-                    <input type="radio" name="keep" value="{{.ID}}">
+                    <input type="checkbox" name="ids" value="{{.ID}}">
                     <strong>{{.Title}}</strong>
                     {{if .FolderPath}}<small style="color: var(--pico-color-slate-500);"> — {{.FolderPath}}</small>{{end}}
                 </label>
@@ -22,9 +23,9 @@
         </ul>
     </article>
     {{end}}
-    <button type="submit">Оставить выбранные, удалить остальные</button>
+    <button type="submit" class="secondary">Delete Selected</button>
 </form>
 {{else}}
-<p>Дубликатов не найдено.</p>
+<p>No duplicates found.</p>
 {{end}}
 {{end}}
