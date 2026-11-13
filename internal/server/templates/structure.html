@@ -1,13 +1,14 @@
 {{define "structure_page"}}
 <h1>Folder Structure</h1>
 
+<p>Total bookmarks: {{.TotalBm}}, folders found: {{.TotalFold}}</p>
+
 {{if .Analysis}}
 {{range .Analysis}}
-<article style="background: {{if .Suggestion}}#F4F4F5{{end}}; margin-bottom: 0.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="padding-left: {{mul .Depth 1.5}}rem;">
-            {{.Path}} <small style="color: var(--pico-color-slate-500);">({{.Count}} bookmarks, depth {{.Depth}})</small>
-        </span>
+<article style="background: {{if .Suggestion}}#F4F4F5{{end}}; margin-bottom: 0.5rem; padding: 0.6rem 1rem;">
+    <div>
+        <strong>{{.Path}}</strong>
+        <small style="color: var(--pico-color-slate-500);"> — {{.Count}} bookmarks, depth {{.Depth}}</small>
     </div>
     {{if .Suggestion}}
     <p style="color: var(--pico-color-slate-600); font-size: 0.9rem; margin: 0.3rem 0 0 0;">
@@ -17,6 +18,6 @@
 </article>
 {{end}}
 {{else}}
-<p>No bookmark folders found. All bookmarks are in the root.</p>
+<p>No folders analyzed. Upload bookmarks first.</p>
 {{end}}
 {{end}}

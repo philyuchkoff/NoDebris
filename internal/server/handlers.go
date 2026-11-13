@@ -221,12 +221,15 @@ func handleDupResolve(w http.ResponseWriter, r *http.Request) {
 func handleStructure(w http.ResponseWriter, r *http.Request) {
 	mu.RLock()
 	analysis := analyzer.AnalyzeStructure(bookmarks)
+	total := len(bookmarks)
 	mu.RUnlock()
 
 	tmpl.ExecuteTemplate(w, "base.html", map[string]interface{}{
-		"Title":    "Folder Structure",
-		"Content":  "structure_page",
-		"Analysis": analysis,
+		"Title":     "Folder Structure",
+		"Content":   "structure_page",
+		"Analysis":  analysis,
+		"TotalBm":   total,
+		"TotalFold": len(analysis),
 	})
 }
 
@@ -242,7 +245,8 @@ func handleCheckLinksStart(w http.ResponseWriter, r *http.Request) {
 	checkMu.Lock()
 	if checkRunning {
 		checkMu.Unlock()
-		http.Error(w, "Check already running", http.StatusConflict)
+		w.Header().Set("Content-Type", "text/html")
+		w.Write([]byte("<p style=\"color: var(--pico-color-slate-500);\">Check is already running...</p>"))
 		return
 	}
 	checkRunning = true
@@ -304,9 +308,11 @@ func handleCheckLinksStart(w http.ResponseWriter, r *http.Request) {
 		mu.Unlock()
 	}()
 
+	w.Header().Set("HX-Trigger", "poll-progress")
 	tmpl.ExecuteTemplate(w, "check_progress.html", map[string]interface{}{
-		"Done":  0,
-		"Total": checkTotal,
+		"Done":    0,
+		"Total":   checkTotal,
+		"Running": true,
 	})
 }
 
@@ -318,6 +324,10 @@ func handleCheckLinksProgress(w http.ResponseWriter, r *http.Request) {
 	copy(results, checkResults)
 	running := checkRunning
 	checkMu.Unlock()
+
+	if running && done < total {
+		w.Header().Set("HX-Trigger", "poll-progress")
+	}
 
 	tmpl.ExecuteTemplate(w, "check_progress.html", map[string]interface{}{
 		"Done":    done,

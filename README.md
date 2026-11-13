@@ -2,6 +2,8 @@
 
 A command-line and web tool to clean up your Chrome bookmarks. Find duplicates, detect broken links, auto-categorize, and flatten deep folder structures.
 
+![Architecture](./web/static/img/architecture-en.svg)
+
 ## Features
 
 - **Duplicate detection** — find identical URLs across folders, keep one, remove the rest

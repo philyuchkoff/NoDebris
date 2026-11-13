@@ -41,7 +41,7 @@
     </button>
 </div>
 
-<div id="check-area"></div>
+<div id="check-area" hx-get="/check-links/progress" hx-trigger="poll-progress from:body delay:1s" hx-swap="innerHTML"></div>
 
 <form id="bookmarks-form" method="post" action="/delete">
     <div style="display:flex; gap:0.5rem; margin-bottom:0.5rem;">
