@@ -29,10 +29,13 @@
     <button type="submit">Apply</button>
 </form>
 
-<div style="display:flex; gap:0.5rem; margin:1rem 0; flex-wrap:wrap;">
-    <button type="button" hx-get="/check-links" hx-target="#check-area" hx-swap="innerHTML">
+<div style="display:flex; gap:0.5rem; margin:1rem 0; flex-wrap:wrap; align-items:center;">
+    <button type="button" hx-get="/check-links" hx-target="#check-area" hx-swap="innerHTML" hx-indicator="#check-spinner">
         Check Links
     </button>
+    <span id="check-spinner" class="htmx-indicator">
+        <small aria-busy="true">Checking links...</small>
+    </span>
     <button type="button" onclick="location.href='/categorize'">
         Auto-Categorize
     </button>
