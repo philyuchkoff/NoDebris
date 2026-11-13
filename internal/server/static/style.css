@@ -52,7 +52,7 @@ header nav a:hover {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--border-mist);
   text-align: left;
-  word-break: break-word;
+  overflow-wrap: break-word;
   vertical-align: top;
 }
 
@@ -68,7 +68,7 @@ header nav a:hover {
 }
 
 .url-cell {
-  word-break: break-all;
+  overflow-wrap: anywhere;
   color: var(--text-stone);
   font-size: 0.85rem;
 }
