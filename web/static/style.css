@@ -1,0 +1,102 @@
+:root {
+  --pico-spacing: 0.5rem;
+  --bg-page: #FAFBFC;
+  --bg-surface: #FFFFFF;
+  --border-mist: #E4E4E7;
+  --text-ink: #18181B;
+  --text-stone: #71717A;
+  --accent: #0172AD;
+  --status-ok: #10B981;
+  --status-broken: #EF4444;
+  --status-redirect: #F59E0B;
+  --status-duplicate: #A1A1AA;
+}
+
+body {
+  background: var(--bg-page);
+  color: var(--text-ink);
+}
+
+header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-mist);
+  padding: 0.75rem 0;
+  margin-bottom: 1.5rem;
+}
+
+header nav a {
+  color: var(--text-stone) !important;
+}
+
+header nav a:hover {
+  color: var(--accent) !important;
+}
+
+.compact-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compact-table th,
+.compact-table td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--border-mist);
+  text-align: left;
+}
+
+.compact-table thead th {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-stone);
+  border-bottom: 2px solid var(--border-mist);
+}
+
+.compact-table tbody tr:hover {
+  background: var(--bg-page);
+}
+
+.url-cell {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  color: var(--text-stone);
+  font-size: 0.85rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-ok {
+  background: color-mix(in srgb, var(--status-ok) 15%, transparent);
+  color: var(--status-ok);
+}
+
+.badge-broken {
+  background: color-mix(in srgb, var(--status-broken) 15%, transparent);
+  color: var(--status-broken);
+}
+
+.badge-redirect {
+  background: color-mix(in srgb, var(--status-redirect) 15%, transparent);
+  color: var(--status-redirect);
+}
+
+.badge-duplicate {
+  background: color-mix(in srgb, var(--status-duplicate) 15%, transparent);
+  color: var(--status-duplicate);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+progress {
+  width: 100%;
+}

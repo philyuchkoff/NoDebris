@@ -1,0 +1,31 @@
+<div {{if .Running}}{{if lt .Done .Total}}hx-get="/check-links/progress" hx-trigger="every 800ms" hx-swap="outerHTML"{{end}}{{end}}>
+    {{if .Running}}
+    <progress value="{{.Done}}" max="{{.Total}}"></progress>
+    <p>{{.Done}} / {{.Total}} проверено</p>
+    {{end}}
+
+    {{if and (not .Running) (gt .Total 0) (eq .Done .Total)}}
+    <progress value="{{.Total}}" max="{{.Total}}"></progress>
+    <p>Проверка завершена: {{.Total}} ссылок</p>
+
+    <table class="compact-table">
+        <thead>
+            <tr><th>URL</th><th>Статус</th></tr>
+        </thead>
+        <tbody>
+        {{range .Results}}
+        <tr>
+            <td>ID {{.ID}}</td>
+            <td>
+                {{if .Error}}
+                    <span class="badge badge-broken">Ошибка: {{.Error}}</span>
+                {{else}}
+                    <span class="badge {{statusClass .StatusCode}}">{{statusLabel .StatusCode .Error}}</span>
+                {{end}}
+            </td>
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+    {{end}}
+</div>

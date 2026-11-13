@@ -1,0 +1,92 @@
+{{define "bookmarks_page"}}
+<h1>Закладки</h1>
+
+<p>Всего: {{.Total}}, показано: {{.Shown}}</p>
+
+<form method="get" action="/bookmarks" style="display:flex; gap:0.5rem; align-items:flex-end; flex-wrap:wrap;">
+    <label>
+        Поиск
+        <input type="search" name="search" value="{{.Search}}" placeholder="Заголовок или URL">
+    </label>
+    <label>
+        Фильтр
+        <select name="filter">
+            <option value="">Все</option>
+            <option value="broken" {{if eq .Filter "broken"}}selected{{end}}>Битые</option>
+            <option value="redirect" {{if eq .Filter "redirect"}}selected{{end}}>Редиректы</option>
+            <option value="duplicate" {{if eq .Filter "duplicate"}}selected{{end}}>Дубликаты</option>
+        </select>
+    </label>
+    <label>
+        Папка
+        <select name="folder">
+            <option value="">Все папки</option>
+            {{range .Folders}}
+            <option value="{{.}}" {{if eq $.Folder .}}selected{{end}}>{{.}}</option>
+            {{end}}
+        </select>
+    </label>
+    <button type="submit">Применить</button>
+</form>
+
+<div style="display:flex; gap:0.5rem; margin:1rem 0; flex-wrap:wrap;">
+    <button hx-get="/check-links" hx-target="#check-area" hx-swap="innerHTML">
+        Проверить ссылки
+    </button>
+    <button onclick="location.href='/categorize'">
+        Авто-категоризация
+    </button>
+</div>
+
+<div id="check-area"></div>
+
+<form id="bookmarks-form" method="post" action="/delete">
+    <div style="display:flex; gap:0.5rem; margin-bottom:0.5rem;">
+        <button type="button" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=true)">Выбрать всё</button>
+        <button type="button" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=false)">Снять выбор</button>
+        <button type="submit" formaction="/delete" onclick="return confirm('Удалить выбранные закладки?')" class="secondary">Удалить</button>
+        <button type="submit" formaction="/move" onclick="return confirm('Переместить выбранные?')" class="secondary">Переместить в папку</button>
+        <select name="folder" form="bookmarks-form">
+            <option value="">(без папки)</option>
+            {{range .Folders}}
+            <option value="{{.}}">{{.}}</option>
+            {{end}}
+        </select>
+    </div>
+
+    <div class="table-wrapper">
+    <table class="compact-table">
+        <thead>
+            <tr>
+                <th><input type="checkbox" onclick="document.querySelectorAll('#bookmarks-form tbody input[type=checkbox]').forEach(c=>c.checked=this.checked)"></th>
+                <th>Заголовок</th>
+                <th>URL</th>
+                <th>Папка</th>
+                <th>Категория</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Bookmarks}}
+            <tr>
+                <td><input type="checkbox" name="ids" value="{{.ID}}"></td>
+                <td>{{.Title}}</td>
+                <td><a href="{{.URL}}" target="_blank" class="url-cell">{{.URL}}</a></td>
+                <td>{{.FolderPath}}</td>
+                <td>{{.SuggestedCategory}}</td>
+                <td>
+                    {{if .IsDuplicate}}<span class="badge badge-duplicate">Дубль</span>{{end}}
+                    {{if .StatusCode}}
+                    <span class="badge {{statusClass .StatusCode}}">{{statusLabel .StatusCode ""}}</span>
+                    {{end}}
+                    {{if .RedirectURL}}
+                    <span class="badge badge-redirect" title="{{.RedirectURL}}">→</span>
+                    {{end}}
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    </div>
+</form>
+{{end}}

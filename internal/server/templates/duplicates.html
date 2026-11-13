@@ -1,0 +1,30 @@
+{{define "duplicates_page"}}
+<h1>Дубликаты</h1>
+
+{{if .TotalDups}}
+<p>Найдено групп дубликатов: {{.TotalDups}}</p>
+
+<form method="post" action="/duplicates/resolve">
+    {{range $i, $g := .DupGroups}}
+    <article>
+        <h3>{{$g.URL}}</h3>
+        <p style="color: var(--pico-color-slate-500); font-size: 0.85rem;">Найдено копий: {{len $g.Bookmarks}}</p>
+        <ul style="list-style:none; padding:0;">
+            {{range $g.Bookmarks}}
+            <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--pico-muted-border-color);">
+                <label>
+                    <input type="radio" name="keep" value="{{.ID}}">
+                    <strong>{{.Title}}</strong>
+                    {{if .FolderPath}}<small style="color: var(--pico-color-slate-500);"> — {{.FolderPath}}</small>{{end}}
+                </label>
+            </li>
+            {{end}}
+        </ul>
+    </article>
+    {{end}}
+    <button type="submit">Оставить выбранные, удалить остальные</button>
+</form>
+{{else}}
+<p>Дубликатов не найдено.</p>
+{{end}}
+{{end}}

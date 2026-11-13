@@ -1,0 +1,18 @@
+{{define "structure_page"}}
+<h1>Структура папок</h1>
+
+{{range .Analysis}}
+<article style="background: {{if .Suggestion}}#F4F4F5{{end}}; margin-bottom: 0.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="padding-left: {{mul .Depth 1.5}}rem;">
+            {{.Path}} <small style="color: var(--pico-color-slate-500);">({{.Count}} закладок, глубина {{.Depth}})</small>
+        </span>
+    </div>
+    {{if .Suggestion}}
+    <p style="color: var(--pico-color-slate-600); font-size: 0.9rem; margin: 0.3rem 0 0 0;">
+        {{.Suggestion}}
+    </p>
+    {{end}}
+</article>
+{{end}}
+{{end}}
