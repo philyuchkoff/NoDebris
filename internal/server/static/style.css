@@ -1,5 +1,6 @@
 :root {
   --pico-spacing: 0.5rem;
+  --pico-font-family: "PT Sans", sans-serif;
   --bg-page: #FAFBFC;
   --bg-surface: #FFFFFF;
   --border-mist: #E4E4E7;
@@ -12,9 +13,18 @@
   --status-duplicate: #A1A1AA;
 }
 
+.container {
+  max-width: 95% !important;
+}
+
 body {
   background: var(--bg-page);
   color: var(--text-ink);
+  font-family: "PT Sans", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "PT Serif", serif;
 }
 
 header {
@@ -42,6 +52,8 @@ header nav a:hover {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--border-mist);
   text-align: left;
+  word-break: break-word;
+  vertical-align: top;
 }
 
 .compact-table thead th {
@@ -56,11 +68,7 @@ header nav a:hover {
 }
 
 .url-cell {
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: block;
+  word-break: break-all;
   color: var(--text-stone);
   font-size: 0.85rem;
 }
@@ -94,7 +102,6 @@ header nav a:hover {
 }
 
 .table-wrapper {
-  overflow-x: auto;
 }
 
 progress {

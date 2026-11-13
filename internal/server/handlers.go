@@ -373,14 +373,11 @@ func filterBookmarks(list []model.Bookmark, filter, search, folder string) []mod
 		}
 		switch filter {
 		case "broken":
-			if !b.IsBroken && b.StatusCode == 0 {
-				continue
-			}
-			if !b.IsBroken && b.StatusCode > 0 && b.StatusCode < 400 {
+			if !b.IsBroken {
 				continue
 			}
 		case "redirect":
-			if b.RedirectURL == "" && (b.StatusCode < 300 || b.StatusCode >= 400) {
+			if b.RedirectURL == "" {
 				continue
 			}
 		case "duplicate":

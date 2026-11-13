@@ -34,7 +34,7 @@ make build
 ### Запуск веб-интерфейса
 
 ```bash
-nodebris serve
+./nodebris serve
 ```
 
 Открой http://localhost:8080, загрузи файл экспорта закладок и начинай чистку.
