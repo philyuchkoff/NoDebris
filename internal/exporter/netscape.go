@@ -46,51 +46,46 @@ type folderNode struct {
 }
 
 func buildFolderTree(folderMap map[string][]model.Bookmark) []*folderNode {
-	root := make(map[string]*folderNode)
+	type treeNode struct {
+		node     *folderNode
+		children map[string]*treeNode
+	}
+
+	root := &treeNode{
+		node:     &folderNode{Name: ""},
+		children: make(map[string]*treeNode),
+	}
 
 	for path, bms := range folderMap {
 		parts := strings.Split(path, "/")
-		accum := ""
-		var parent map[string]*folderNode
-		parent = root
+		current := root
 
 		for i, part := range parts {
-			if accum == "" {
-				accum = part
-			} else {
-				accum = accum + "/" + part
-			}
-
-			if _, ok := parent[accum]; !ok {
-				parent[accum] = &folderNode{Name: part}
-			}
-			node := parent[accum]
-
-			if i == len(parts)-1 {
-				node.Bookmarks = append(node.Bookmarks, bms...)
-			}
-
-			if len(parts) > 1 && i < len(parts)-1 {
-				if node.Children == nil {
-					node.Children = make([]*folderNode, 0)
+			if _, ok := current.children[part]; !ok {
+				current.children[part] = &treeNode{
+					node:     &folderNode{Name: part},
+					children: make(map[string]*treeNode),
 				}
 			}
+			current = current.children[part]
 
-			parent = root
-			_ = node
+			if i == len(parts)-1 {
+				current.node.Bookmarks = append(current.node.Bookmarks, bms...)
+			}
 		}
 	}
 
-	seen := make(map[string]bool)
-	var result []*folderNode
-	for path, node := range root {
-		parts := strings.Split(path, "/")
-		if len(parts) == 1 && !seen[path] {
-			seen[path] = true
-			result = append(result, node)
+	var buildList func(tn *treeNode) []*folderNode
+	buildList = func(tn *treeNode) []*folderNode {
+		var result []*folderNode
+		for _, child := range tn.children {
+			child.node.Children = buildList(child)
+			result = append(result, child.node)
 		}
+		return result
 	}
-	return result
+
+	return buildList(root)
 }
 
 func writeFolder(w io.Writer, nodes []*folderNode, indent int) {

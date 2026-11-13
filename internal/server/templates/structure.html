@@ -1,6 +1,7 @@
 {{define "structure_page"}}
 <h1>Folder Structure</h1>
 
+{{if .Analysis}}
 {{range .Analysis}}
 <article style="background: {{if .Suggestion}}#F4F4F5{{end}}; margin-bottom: 0.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -14,5 +15,8 @@
     </p>
     {{end}}
 </article>
+{{end}}
+{{else}}
+<p>No bookmark folders found. All bookmarks are in the root.</p>
 {{end}}
 {{end}}

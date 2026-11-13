@@ -183,6 +183,11 @@ func handleDupResolve(w http.ResponseWriter, r *http.Request) {
 		deleteSet[id] = true
 	}
 
+	if len(deleteSet) == 0 {
+		http.Redirect(w, r, "/duplicates", http.StatusSeeOther)
+		return
+	}
+
 	mu.Lock()
 	dups := analyzer.FindDuplicates(bookmarks)
 
@@ -196,7 +201,7 @@ func handleDupResolve(w http.ResponseWriter, r *http.Request) {
 				marked++
 			}
 		}
-		if marked == total {
+		if marked >= total {
 			delete(removeSet, group.Bookmarks[0].ID)
 		}
 	}
@@ -313,10 +318,6 @@ func handleCheckLinksProgress(w http.ResponseWriter, r *http.Request) {
 	copy(results, checkResults)
 	running := checkRunning
 	checkMu.Unlock()
-
-	if running && done < total {
-		w.Header().Set("HX-Trigger", "every 800ms")
-	}
 
 	tmpl.ExecuteTemplate(w, "check_progress.html", map[string]interface{}{
 		"Done":    done,

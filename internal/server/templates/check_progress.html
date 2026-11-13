@@ -1,4 +1,4 @@
-<div {{if .Running}}{{if lt .Done .Total}}hx-get="/check-links/progress" hx-trigger="every 800ms" hx-swap="outerHTML"{{end}}{{end}}>
+<div {{if .Running}}{{if lt .Done .Total}}hx-get="/check-links/progress" hx-trigger="load delay:1s" hx-swap="outerHTML"{{end}}{{end}}>
     {{if .Running}}
     <progress value="{{.Done}}" max="{{.Total}}"></progress>
     <p>{{.Done}} / {{.Total}} checked</p>
