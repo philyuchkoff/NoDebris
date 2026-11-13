@@ -14,6 +14,9 @@ import (
 //go:embed templates/*
 var templateFS embed.FS
 
+//go:embed static/*
+var staticFS embed.FS
+
 var (
 	tmpl         *template.Template
 	bookmarks    []model.Bookmark
@@ -85,7 +88,7 @@ func Run(addr string) error {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /static/", func(w http.ResponseWriter, r *http.Request) {
-		http.FileServer(http.Dir("web/static")).ServeHTTP(w, r)
+		http.FileServerFS(staticFS).ServeHTTP(w, r)
 	})
 
 	mux.HandleFunc("GET /{$}", handleIndex)
