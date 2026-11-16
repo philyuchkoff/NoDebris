@@ -19,7 +19,7 @@
 ### Установка
 
 ```bash
-go install github.com/philyuchkoff/NoDebris/cmd/bookmark-cleaner@latest
+go install github.com/philyuchkoff/NoDebris/cmd/nodebris@latest
 ```
 
 Или собрать из исходников:
@@ -91,7 +91,7 @@ nodebris analyze <файл>        вывод анализа в консоль
 
 ```
 NoDebris/
-├── cmd/bookmark-cleaner/    # точка входа (serve + analyze)
+├── cmd/nodebris/    # точка входа (serve + analyze)
 ├── internal/
 │   ├── parser/              # парсеры HTML-экспорта и Chrome JSON
 │   ├── model/               # модель данных Bookmark

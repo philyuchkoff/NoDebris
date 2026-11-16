@@ -19,7 +19,7 @@ A command-line and web tool to clean up your Chrome bookmarks. Find duplicates, 
 ### Install
 
 ```bash
-go install github.com/philyuchkoff/NoDebris/cmd/bookmark-cleaner@latest
+go install github.com/philyuchkoff/NoDebris/cmd/nodebris@latest
 ```
 
 Or build from source:
@@ -91,7 +91,7 @@ Create a `categories.json` file next to the binary:
 
 ```
 NoDebris/
-├── cmd/bookmark-cleaner/    # entry point (serve + analyze)
+├── cmd/nodebris/    # entry point (serve + analyze)
 ├── internal/
 │   ├── parser/              # HTML export & Chrome JSON parsers
 │   ├── model/               # Bookmark data model

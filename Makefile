@@ -1,10 +1,10 @@
 .PHONY: build run test clean
 
 build:
-	go build -o nodebris ./cmd/bookmark-cleaner/
+	go build -o nodebris ./cmd/nodebris/
 
 run:
-	go run ./cmd/bookmark-cleaner/ serve
+	go run ./cmd/nodebris/ serve
 
 test:
 	go test ./internal/... -v
