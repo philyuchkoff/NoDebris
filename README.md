@@ -28,7 +28,7 @@ Or build from source:
 git clone https://github.com/philyuchkoff/NoDebris
 cd NoDebris
 make build
-# binary at bin/nodebris
+# binary at ./nodebris
 ```
 
 ### Run the web interface

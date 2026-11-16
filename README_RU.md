@@ -28,7 +28,7 @@ go install github.com/philyuchkoff/NoDebris/cmd/nodebris@latest
 git clone https://github.com/philyuchkoff/NoDebris
 cd NoDebris
 make build
-# бинарник в bin/nodebris
+# бинарник в ./nodebris
 ```
 
 ### Запуск веб-интерфейса
