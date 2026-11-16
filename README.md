@@ -22,6 +22,11 @@ A command-line and web tool to clean up your Chrome bookmarks. Find duplicates, 
 go install github.com/philyuchkoff/NoDebris/cmd/nodebris@latest
 ```
 
+> **Note:** Ensure `$(go env GOPATH)/bin` is in your `PATH`:
+> ```bash
+> export PATH=$PATH:$(go env GOPATH)/bin
+> ```
+
 Or build from source:
 
 ```bash

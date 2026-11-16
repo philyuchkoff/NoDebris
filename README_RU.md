@@ -22,6 +22,11 @@
 go install github.com/philyuchkoff/NoDebris/cmd/nodebris@latest
 ```
 
+> **Важно:** Убедись, что `$(go env GOPATH)/bin` добавлен в `PATH`:
+> ```bash
+> export PATH=$PATH:$(go env GOPATH)/bin
+> ```
+
 Или собрать из исходников:
 
 ```bash
