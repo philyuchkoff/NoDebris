@@ -39,7 +39,8 @@ make build
 ### Запуск веб-интерфейса
 
 ```bash
-./nodebris serve
+nodebris serve     # если установлен через go install
+./nodebris serve   # если собран из исходников
 ```
 
 Открой http://localhost:8080, загрузи файл экспорта закладок и начинай чистку.

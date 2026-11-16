@@ -39,7 +39,8 @@ make build
 ### Run the web interface
 
 ```bash
-./nodebris serve
+nodebris serve     # if installed via go install
+./nodebris serve   # if built from source
 ```
 
 Open http://localhost:8080, upload your bookmarks export file, and start cleaning.
